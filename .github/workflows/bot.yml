@@ -43,6 +43,8 @@ jobs:
 
       - name: Download and rename files
         run: |
+          rm -f config.yml
+          curl -L -o config.yml https://raw.githubusercontent.com/GoogleChess/TestBot/blob/main/config.yml
           mkdir -p engines
           curl -L -o engines/draw.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Polygot/main/draw.bin
           curl -L -o engines/white.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Polygot/main/white.bin
