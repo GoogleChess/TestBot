@@ -41,7 +41,7 @@ jobs:
       - name: Clean up
         run: rm -rf stockfish stockfish.tar
 
-      - name: Download and rename Polygot bin files
+      - name: Download and rename files
         run: |
           mkdir -p engines
           curl -L -o engines/draw.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Polygot/main/draw.bin
