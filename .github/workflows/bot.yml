@@ -1,0 +1,69 @@
+name: Run Bot Tournament
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run_bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout bot Tournament branch
+        uses: actions/checkout@v4
+        with:
+          repository: TheXdOneHimSelf/bot
+          ref: Tournament
+
+      - name: Cache pip downloads
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Query latest Stockfish dev release asset URL
+        id: get_url
+        run: |
+          url=$(curl -s https://api.github.com/repos/official-stockfish/Stockfish/releases \
+            | jq -r '[.[] | select(.prerelease==true and (.tag_name|type == "string") and (.tag_name|test("^stockfish-dev")))] | .[0].assets[] | select(.name|test("stockfish-ubuntu-x86-64-bmi2.tar$")).browser_download_url')
+          echo "ASSET_URL=$url" >> $GITHUB_ENV
+
+      - name: Download and extract Stockfish
+        run: |
+          curl -L "$ASSET_URL" -o stockfish.tar
+          tar -xf stockfish.tar
+
+      - name: Move and rename Stockfish binary to 'engines/stockfish'
+        run: |
+          mkdir -p engines
+          mv stockfish/stockfish-ubuntu-x86-64-bmi2 engines/stockfish
+
+      - name: Clean up
+        run: rm -rf stockfish stockfish.tar
+
+      - name: Download and rename Polygot bin files
+        run: |
+          mkdir -p engines
+          curl -L -o engines/draw.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Polygot/main/draw.bin
+          curl -L -o engines/white.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Polygot/main/white.bin
+          curl -L -o engines/black.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Polygot/main/black.bin
+
+      - name: Install dependencies & prepare
+        run: |
+          pip install --no-cache-dir --prefer-binary -r requirements.txt
+          sed -i "s/XXXXXXXXXXXXXXXXXXX/${{ secrets.TOKEN }}/g" config.yml
+          chmod +x ./engines/stockfish
+
+      - name: Run Bot
+        run: |
+          echo "Starting bot..."
+          python3 -u user_interface.py &
+          PID=$!
+          ( sleep 20700 && echo "Time up. Killing bot..." && kill -SIGTERM $PID ) &
+          wait $PID
+          echo "Bot ended cleanly."
+
+      - name: 🔁 Self-Restart
+        run: gh workflow run "Run Bot Tournament"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
