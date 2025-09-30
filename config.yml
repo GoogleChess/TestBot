@@ -231,10 +231,6 @@ matchmaking:
     bullet:
       tc: 0+1
       variant: chess960
-    bulle2:
-      tc: 3+0
-    bc:
-      tc: 5+0
     bm3:
       tc: 1+0
     gulugulu:
