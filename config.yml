@@ -214,34 +214,48 @@ challenge:                                # Incoming challenges.
 #   - classical
   bot_modes:                              # Game modes to accept against BOTs.
     - casual                              # Unrated games.
-#   - rated                               # Rated games
+    - rated                               # Rated games
   human_modes:                            # Game modes to accept against humans.
     - casual                              # Unrated games.
 #   - rated                               # Rated games
 
 matchmaking:
-  delay: 60                               # Time in seconds the bot must be idle before a new challenge is started.
-  timeout: 60                             # Time until a challenge is canceled.
-  selection: cyclic                       # Matchmkaing type selection is one of "weighted_random", "sequential" or "cyclic".
-  types:                                  # Matchmaking types of which one is selected before each game.
-    hyperbullet:                          # Arbitrary name of the matchmaking type. Names must be unique.
-      tc: 0.5+0                           # Time control in initial_minutes+increment_seconds format.
-      rated: false                        # Whether matchmaking should play rated games. Default: true
-    slowhyperbullet:                      # Arbitrary name of the matchmaking type. Names must be unique.
-      tc: 0.5+1                           # Time control in initial_minutes+increment_seconds format.
-      rated: false                        # Whether matchmaking should play rated games. Default: true
-    fastbullet:                           # Arbitrary name of the matchmaking type. Names must be unique.
-      tc: 1+0                             # Time control in initial_minutes+increment_seconds format.
-      rated: false                        # Whether matchmaking should play rated games. Default: true
-    bullet:                               # Arbitrary name of the matchmaking type. Names must be unique.
-      tc: 1+1                             # Time control in initial_minutes+increment_seconds format.
-      rated: false                        # Whether matchmaking should play rated games. Default: true
-    slowbullet:                           # Arbitrary name of the matchmaking type. Names must be unique.
-      tc: 2+0                             # Time control in initial_minutes+increment_seconds format.
-      rated: false                        # Whether matchmaking should play rated games. Default: true
-    slowerbullet:                         # Arbitrary name of the matchmaking type. Names must be unique.
-      tc: 2+1                             # Time control in initial_minutes+increment_seconds format.
-      rated: false                        # Whether matchmaking should play rated games. Default: true
+  delay: 485
+  timeout: 60
+  selection: cyclic
+  types:
+    hp:
+      tc: 0.5+0
+    bp:
+      tc: 0.75+0
+    bullet:
+      tc: 0+1
+      variant: chess960
+    bulle2:
+      tc: 3+0
+    bc:
+      tc: 5+0
+    bm3:
+      tc: 1+0
+    gulugulu:
+      tc: 0+1
+    guliguli:
+      tc: 10+0
+    hvj:
+      tc: 1.5+0
+    win:
+      tc: 8+0
+    loss:
+      tc: 2+0
+    drum:
+      tc: 0.5+1
+      variant: chess960
+    nineten:
+      tc: 0+1
+      variant: chess960
+    polygot:
+      tc: 0+1
+
 
 messages:
   greeting: "Hello {opponent}! Good luck and have fun! Type !help for a list of commands."
