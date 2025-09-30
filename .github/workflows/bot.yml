@@ -40,12 +40,14 @@ jobs:
 
       - name: Clean up
         run: |
-         rm -rf config.yml
          rm -rf stockfish stockfish.tar
+
+      - name: Overwrite config.yml with main branch version
+        run: |
+         curl -L -o config.yml https://raw.githubusercontent.com/GoogleChess/TestBot/main/config.yml
 
       - name: Download and rename files
         run: |
-          curl -L -o config.yml https://raw.githubusercontent.com/GoogleChess/TestBot/blob/main/config.yml
           mkdir -p engines
           curl -L -o engines/draw.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Polygot/main/draw.bin
           curl -L -o engines/white.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Polygot/main/white.bin
