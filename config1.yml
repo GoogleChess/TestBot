@@ -1,0 +1,261 @@
+token: "XXXXXXXXXXXXXXXXXXX"  # Lichess OAuth2 Token.
+
+engines:
+  standard:
+    dir: "./engines"
+    name: "stockfish"
+    ponder: true
+    silence_stderr: false
+    move_overhead_multiplier: 1.0
+    uci_options:
+      Threads: 4
+      Hash: 4096
+      Move Overhead: 221
+    limits:
+#      time: 5.0                           # Max time per move in seconds.
+#      depth: 26                           # Max depth per move.
+#      nodes: 4000000                      # Max nodes per move.
+  0.5+0:
+    dir: "./engines"
+    name: "stockfish"
+    ponder: true
+    silence_stderr: false
+    move_overhead_multiplier: 1.0
+    uci_options:
+      Threads: 4
+      Hash: 5120
+      Move Overhead: 273
+    limits:
+       time: 2.5                           # Max time per move in seconds.
+#      depth: 26                           # Max depth per move.
+#      nodes: 4000000                      # Max nodes per move.
+  standard_human:
+    dir: "./engines"
+    name: "stockfish"
+    ponder: false
+    silence_stderr: false
+    move_overhead_multiplier: 1.0
+    uci_options:
+      Threads: 2
+      Hash: 256
+      Move Overhead: 125
+    limits:
+       time: 1.0                           # Max time per move in seconds.
+#      depth: 26                           # Max depth per move.
+#      nodes: 4000000                      # Max nodes per move.
+  bullet:
+    dir: "./engines"
+    name: "stockfish"
+    ponder: true
+    silence_stderr: false
+    move_overhead_multiplier: 1.0
+    uci_options:
+       Threads: 4
+       Hash: 4096
+       Move Overhead: 263
+    limits: 
+#      time: 5.0                           # Max time per move in seconds.
+#      depth: 26                           # Max depth per move.
+#      nodes: 4000000                      # Max nodes per move.
+  chess960:
+    dir: "./engines"
+    name: "stockfish"
+    ponder: true
+    silence_stderr: false
+    move_overhead_multiplier: 1.0
+    uci_options:
+       Threads: 4
+       Hash: 4096
+       Move Overhead: 178
+    limits: 
+#      time: 25.0                          # Max time per move in seconds.
+#      depth: 26                           # Max depth per move.
+#      nodes: 4000000                      # Max nodes per move.
+
+
+syzygy:
+  standard:
+    enabled: false
+    paths:
+      - "./engines/syzygy"
+    max_pieces: 6
+    instant_play: true
+  antichess:
+    enabled: false
+    paths:
+      - "/path/to/antichess/syzygy"
+    max_pieces: 6
+    instant_play: true
+  atomic:
+    enabled: false
+    paths:
+      - "/path/to/atomic/syzygy"
+    max_pieces: 6
+    instant_play: true
+
+gaviota:
+  enabled: false
+  paths:
+    - "/path/to/gaviota"
+  max_pieces: 5
+
+opening_books:
+  enabled: true
+  priority: 999
+  books:
+    standard_white:
+      selection: best_move 
+      allow_repetitions: true   
+      names:
+        - white
+        - draw
+    standard_black:
+      selection: best_move 
+      allow_repetitions: true   
+      names:
+        - black
+        - draw
+    standard_human: 
+      selection: best_move 
+      allow_repetitions: true 
+      max depth : 1 
+      names: 
+        - draw
+        
+online_moves:
+  opening_explorer:
+    enabled: true                        # Activate online moves from Lichess opening explorer. The move that has performed best for this bot is played.
+    priority: 250                         # Priority with which this move source is used. Higher priority is used first.
+    only_without_book: false              # Whether the Lichess opening explorer should only be used if there is no matching book.
+    use_for_variants: false               # Whether the Lichess opening explorer should be used for other variants than standard and chess960.
+    allow_repetitions: false 
+    min_time: 10                          # Time the bot must have at least to use the online move. +10 seconds in games without increment.
+    timeout: 5                            # Time the server has to respond.
+    min_games: 5                          # Minimum number of games in which the position must have occurred.
+    only_with_wins: false                 # Whether to play only moves that have won before.
+    selection: "performance"              # Move selection is "performance" or "win_rate".
+    anti: false                           # Whether to play the moves in which the opponent performs the worst.
+#   max_depth: 16                         # Half move max depth. (Comment this line for max depth)
+#   max_moves: 1                          # Max number of moves played from Lichess opening explorer. (Comment this line for max moves)
+  lichess_cloud:
+    enabled: true                         # Activate online moves from Lichess cloud eval.
+    priority: 250                         # Priority with which this move source is used. Higher priority is used first.
+    only_without_book: false              # Whether the cloud should only be used if there is no matching book.
+    use_for_variants: false               # Whether the cloud should be used for other variants than standard and chess960.
+    allow_repetitions: false
+    trust_eval: false                     # Whether the cloud eval should be trusted for draw offers and resignations.
+    min_eval_depth: 30                    # Minimum evaluation depth.
+    min_time: 20                          # Time the bot must have at least to use the online move. +10 seconds in games without increment.
+    timeout: 5                            # Time the server has to respond.
+#   max_depth: 16                         # Half move max depth. (Comment this line for max depth)
+#   max_moves: 1                          # Max number of moves played from Lichess cloud eval. (Comment this line for max moves)
+  chessdb:
+    enabled: true                         # Activate online moves from https://chessdb.cn/queryc_en/
+    priority: 294                         # Priority with which this move source is used. Higher priority is used first.
+    only_without_book: false              # Whether the chessdb should only be used if there is no matching book.
+    allow_repetitions: false              # Whether the chessdb can create repetitions on the board. Can lead to unintentional draws.
+    trust_eval: false                     # Whether the chessdb eval should be trusted for draw offers and resignations.
+    min_candidates: 2                     # Minimum number of candidate moves.
+    min_time: 10                          # Time the bot must have at least to use the online move. +10 seconds in games without increment.
+    timeout: 5                            # Time the server has to respond.
+    best_move: true 
+    selection: "best"                     # Move selection is one of "optimal", "best" or "good".
+#   max_depth: 16                         # Half move max depth. (Comment this line for max depth)
+#   max_moves: 1                          # Max number of moves played from chessdb. (Comment this line for max moves)
+  online_egtb:
+    enabled: true                        # Activate online endgame tablebases from Lichess.
+    min_time: 5                           # Time the bot must have at least to use the online move. +10 seconds in games without increment.
+    timeout: 2                            # Time the server has to respond.
+
+offer_draw:
+  enabled: true
+  score: 10
+  consecutive_moves: 2
+  min_game_length: 30
+  against_humans: true
+  min_rating: 3000
+
+resign:
+  enabled: true
+  score: -1200
+  consecutive_moves: 6
+  against_humans: false
+  min_rating: 3000
+
+challenge:                                # Incoming challenges.
+  concurrency: 3                          # Number of games to play simultaneously.
+  max_takebacks: 3                        # Maximum number of takebacks granted to a human.
+  bullet_with_increment_only: false       # Whether bullet games against BOTs should only be accepted with increment.
+# min_increment: 0                        # Minimum amount of increment to accept a challenge.
+# max_increment: 180                      # Maximum amount of increment to accept a challenge.
+# min_initial: 0                          # Minimum amount of initial time to accept a challenge.
+# max_initial: 315360000                  # Maximum amount of initial time to accept a challenge.
+  variants:                               # Chess variants to accept (https://lichess.org/variant).
+    - standard
+    - chess960
+#   - fromPosition
+#   - antichess
+#   - atomic
+#   - crazyhouse
+#   - horde
+#   - kingOfTheHill
+#   - racingKings
+#   - threeCheck
+  bot_time_controls:                      # Speeds or time controls in initial_minutes+increment_seconds format to accept against BOTs.
+    - bullet
+    - blitz
+#   - rapid
+#   - classical
+#   - 25+0
+  human_time_controls:                    # Speeds or time controls in initial_minutes+increment_seconds format to accept against humans.
+    - bullet
+#   - blitz
+#   - rapid
+#   - classical
+  bot_modes:                              # Game modes to accept against BOTs.
+    - casual                              # Unrated games.
+#   - rated                               # Rated games
+  human_modes:                            # Game modes to accept against humans.
+    - casual                              # Unrated games.
+#   - rated                               # Rated games
+
+matchmaking:
+  delay: 60                               # Time in seconds the bot must be idle before a new challenge is started.
+  timeout: 60                             # Time until a challenge is canceled.
+  selection: cyclic                       # Matchmkaing type selection is one of "weighted_random", "sequential" or "cyclic".
+  types:                                  # Matchmaking types of which one is selected before each game.
+    hyperbullet:                          # Arbitrary name of the matchmaking type. Names must be unique.
+      tc: 0.5+0                           # Time control in initial_minutes+increment_seconds format.
+      rated: false                        # Whether matchmaking should play rated games. Default: true
+    slowhyperbullet:                      # Arbitrary name of the matchmaking type. Names must be unique.
+      tc: 0.5+1                           # Time control in initial_minutes+increment_seconds format.
+      rated: false                        # Whether matchmaking should play rated games. Default: true
+    fastbullet:                           # Arbitrary name of the matchmaking type. Names must be unique.
+      tc: 1+0                             # Time control in initial_minutes+increment_seconds format.
+      rated: false                        # Whether matchmaking should play rated games. Default: true
+    bullet:                               # Arbitrary name of the matchmaking type. Names must be unique.
+      tc: 1+1                             # Time control in initial_minutes+increment_seconds format.
+      rated: false                        # Whether matchmaking should play rated games. Default: true
+    slowbullet:                           # Arbitrary name of the matchmaking type. Names must be unique.
+      tc: 2+0                             # Time control in initial_minutes+increment_seconds format.
+      rated: false                        # Whether matchmaking should play rated games. Default: true
+    slowerbullet:                         # Arbitrary name of the matchmaking type. Names must be unique.
+      tc: 2+1                             # Time control in initial_minutes+increment_seconds format.
+      rated: false                        # Whether matchmaking should play rated games. Default: true
+
+messages:
+  greeting: "Hello {opponent}! Good luck and have fun! Type !help for a list of commands."
+  goodbye: "Thank you for the game, {opponent}!"
+  greeting_spectators: "Welcome spectators! Type !help for a list of commands."
+  goodbye_spectators: "Thank you all for watching!"
+
+whitelist:
+#
+blacklist:
+#
+online_blacklists:
+#
+books:
+  draw: "./engines/draw.bin"
+  white: "./engines/white.bin"
+  black: "./engines/black.bin"
