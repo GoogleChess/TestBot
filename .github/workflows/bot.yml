@@ -1,10 +1,10 @@
-name: Run Bot Tournament
+name: Run bot
 
 on:
   workflow_dispatch:
 
 jobs:
-  run_bot:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout bot Tournament branch
@@ -69,6 +69,6 @@ jobs:
           echo "Bot ended cleanly."
 
       - name: 🔁 Self-Restart
-        run: gh workflow run "Run Bot Tournament"
+        run: gh workflow run "Run bot"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
